@@ -1,0 +1,26 @@
+{
+  "name": "sdet-test-ruangguru",
+  "version": "1.0.0",
+  "description": "This is the repo for Ruang Guru's SDET test",
+  "main": "index.js",
+  "dependencies": {
+    "chai": "^4.3.4",
+    "supertest": "^6.1.6"
+  },
+  "devDependencies": {
+    "mocha": "^9.1.1"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gloriamonika/sdet-test-ruangguru.git"
+  },
+  "author": "gloria monika",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/gloriamonika/sdet-test-ruangguru/issues"
+  },
+  "homepage": "https://github.com/gloriamonika/sdet-test-ruangguru#readme"
+}
