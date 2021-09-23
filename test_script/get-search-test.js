@@ -161,4 +161,16 @@ describe(`@get ${getSearch.describe}`, async () => {
       assert(response.body).to.jsonSchema(schema)
     }
   })
+
+  it(`${getSearch.testCase.positive.combinedFilter.durationLength}`, async () => {
+    query = {
+      "minDuration": 60,
+      "maxDuration": 120
+    }
+
+    const response = await page.getSearch(query)
+    assert(response.body.status).to.equal('success')
+    //assert(response.body).to.jsonSchema(schema)
+
+  })
 })
