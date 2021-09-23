@@ -5,13 +5,15 @@
   "main": "index.js",
   "dependencies": {
     "chai": "^4.3.4",
+    "chai-json-schema": "^1.5.1",
+    "dotenv": "^10.0.0",
     "supertest": "^6.1.6"
   },
   "devDependencies": {
     "mocha": "^9.1.1"
   },
   "scripts": {
-    "test": "mocha"
+    "test": "node ./node_modules/mocha/bin/mocha ./test_script --recursive --timeout 180000 --exit"
   },
   "repository": {
     "type": "git",

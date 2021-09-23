@@ -1,6 +1,8 @@
 const assert=require('chai').expect
-
+const chai = require('chai')
+chai.use(require('chai-json-schema'))
 const page = require('../page/skillacademy-get.js')
+const schema = require('../data/skillacademy-schema.json')
 
 const getSearch = {
   describe:'As a user I want to be able to search the Skill Academy website',
@@ -12,6 +14,75 @@ const getSearch = {
       maxPrice:'I should be able to search the website with the maximum price filter',
       displayByPage:'I should be able to display the desired number of data on the desired page number',
       sortByPrice:'I should be able to sort the search result in descending order based on the price',
+      minDuration:'I should be able to find results based on the desired minimum duration',
+      maxDuration:'I should be able to find results based on the desired maximum duration',
+      combinedFilter:{
+        priceRange:'I should be able to filter the search result based on a range of minimum and maximum price',
+        durationLength:'I should be able to filter the search result based on a range of minimum and maximum class duration',
+        sortPriceRange:'I should be able to filter the search result by price descending based on a range of minimum and maximum price'
+      }
     }
   }
 }
+
+var query
+
+describe(`@get ${getSearch.describe}`,async() =>{
+  it(`${getSearch.testCase.positive.searchQuery}`,async() =>{
+    query={
+      "searchQuery":"webinar"
+    }
+    const response = await page.getSearch(query)
+    assert(response.body.status).to.equal('success')
+    assert(response.body).to.jsonSchema(schema)
+  })
+
+  it(`${getSearch.testCase.positive.sortByPrice}`,async()=>{
+    query={
+      "sortBy":"price"
+    }
+    const response = await page.getSearch(query)
+    assert(response.body.status).to.equal('success')
+    assert(response.body).to.jsonSchema(schema)
+  })
+
+  it(`${getSearch.testCase.positive.minPrice}`,async() =>{
+    query={
+      "minPrice":100000
+    }
+    const response = await page.getSearch(query)
+    data_arr = response.body.data.data
+    isBigger = true
+    for(i = 0; i<data_arr.length;i++ && isBigger){
+      if(data_arr[i].price<100000){
+        isBigger = false
+      }
+    }
+    if(!isBigger){
+      assert.fail("Returned data does not match the query given, please contact the backend developer!") //fails the test suite if the returned data does not match the query given
+    }else{
+      assert(response.body.status).to.equal('success')
+      assert(response.body).to.jsonSchema(schema)
+    }
+  })
+
+  it(`${getSearch.testCase.positive.maxPrice}`,async() =>{
+    query={
+      "maxPrice":1000000
+    }
+    const response = await page.getSearch(query)
+    data_arr = response.body.data.data
+    isSmaller = true
+    for(i = 0; i<data_arr.length;i++ && isBigger){
+      if(data_arr[i].price>1000000){
+        isSmaller = false
+      }
+    }
+    if(!isSmaller){
+      assert.fail("Returned data does not match the query given, please contact the backend developer!")
+    }else{
+      assert(response.body.status).to.equal('success')
+      assert(response.body).to.jsonSchema(schema)
+    }
+  })
+})
